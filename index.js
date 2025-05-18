@@ -29,6 +29,7 @@ async function run() {
         await client.connect();
         const database = client.db("coffees_data");
         const coffeesCollection = database.collection("coffees");
+        const usersCollection = database.collection('users')
 
         // Insert Data to DB
         app.post('/coffees', async (req, res) => {
@@ -80,6 +81,21 @@ async function run() {
         })
 
 
+
+        // ========================  USER Create API
+
+        app.post('/users', async (req, res) => {
+            const newUser = req.body;
+            const result = await usersCollection.insertOne(newUser);
+            res.send(result)
+            console.log('Connect user API')
+        })
+
+
+        app.get('/users', async (req, res) => {
+            const result = await usersCollection.find({}).toArray();
+            res.send(result)
+        })
 
 
 
